@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,macos
 
+### SUN ###
+*.foo
+laboratory/
+
 ### C ###
 # Prerequisites
 *.d
