@@ -13,21 +13,19 @@ void writeToFile(int cnt, int chr, FILE *file) {
     fputc(chr, file);
 }
 
-void rle(FILE *file) {
-    int prev = fgetc(file), cur = 0, cnt = 1;
+void rle(FILE *file, int *prev, int *cnt) {
+    int cur = 0;
 
     while ((cur = fgetc(file)) != EOF) {
-        if (prev == cur) {
-            cnt++;
+        if (*prev == cur) {
+            (*cnt)++;
         } else {
-            writeToFile(cnt, prev, stdout);
-            prev = cur;
-            cnt = 1;
+            if (*prev != EOF) {
+                writeToFile(*cnt, *prev, stdout);
+            }
+            *prev = cur;
+            *cnt = 1;
         }
-    }
-
-    if (prev != EOF) {
-        writeToFile(cnt, prev, stdout);
     }
 }
 
@@ -37,6 +35,7 @@ int main(int argc, char *argv[]) {
     }
 
     FILE *file = NULL;
+    int prev = EOF, cnt = 0;
     
     for(int i = 1; i < argc; i++) {
         file = fopen(argv[i], READ);
@@ -45,11 +44,15 @@ int main(int argc, char *argv[]) {
             printErrorAndExit("cannot open file");
         }
 
-        rle(file);
+        rle(file, &prev, &cnt);
 
         if (fclose(file) != 0) {
             printErrorAndExit("cannot close file");
         }
+    }
+
+    if (prev != EOF) {
+        writeToFile(cnt, prev, stdout);
     }
 
     exit(0);
