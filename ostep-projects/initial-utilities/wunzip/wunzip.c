@@ -17,8 +17,6 @@ void unzip(FILE *file) {
             printf("%c", chr);
         }
     }
-    
-    printf("\n");
 }
 
 int main(int argc, char *argv[]) {
